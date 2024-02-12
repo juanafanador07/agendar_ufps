@@ -1,0 +1,13 @@
+<form style="width: 500px;" action="">
+    <h1>Disponibilidades</h1>
+    <input class="w-full" type="text" formControlName="nombre" placeholder="Titulo de disponibilidad">
+    <div class="">
+        <p>Horas de la semana</p>
+        @for (day of weekDay; track day) {
+            <app-days [day]="day"></app-days>
+        } @empty {
+            Empty list of days
+        }
+        <button class="btn" style="margin-top: 2rem">Guardar</button>
+    </div>
+</form>
