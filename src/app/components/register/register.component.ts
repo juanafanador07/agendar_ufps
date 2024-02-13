@@ -1,47 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DaysComponent } from './days/days.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, ReactiveFormsModule, Validators, FormArray, AbstractControl } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [DaysComponent],
+  imports: [DaysComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   public form!: FormGroup;
-  constructor( private formBuilder: FormBuilder ) { }
-  weekDay = [
-    {
-      nombre: "",
-      state: false,
-      intervals: [
-        {
-          date_start: "",
-          date_end: ""
-        },
-      ]
-    }
-  ]
 
-  ngOnInit(): void {
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit() {
     const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-    this.weekDay = days.map(day => ({
-      nombre: day,
-      state: false,
-      intervals: [{ date_start: "", date_end: "" }]
-    }));
-
+    const weekDays = days.map(day => {
+      return this.formBuilder.group({
+        nombre: day,
+        state: [false],
+        intervals: this.formBuilder.array([])
+      });
+    });
+  
     this.form = this.formBuilder.group({
-      nombre:['', Validators.required],
-      state: ['', Validators.required],
-      intervals: [
-        {
-          date_start: ['', Validators.required],
-          date_end: ['', Validators.required]
-        },
-      ],
+      name: [null, Validators.required],
+      weekDays: this.formBuilder.array(weekDays)
     });
   }
+  
+  get weekDays (){
+     return this.form.get('weekDays') as FormArray
+  }
+
+  castToFormGroup(control: AbstractControl): FormGroup {
+    return control as FormGroup;
+  }
+
+  save(){
+    if(this.form.valid){
+      console.log(this.form.value)
+    }
+
+    console.log({
+      ...this.form.value,
+      weekDays: this.form.value.weekDays.filter((day : any) => {
+        return day.state
+      })
+    })
+  }
+
 }

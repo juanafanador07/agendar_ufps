@@ -1,13 +1,15 @@
-<form style="width: 500px;" action="">
+<form style="width: 500px;" action="" [formGroup]="form">
     <h1>Disponibilidades</h1>
-    <input class="w-full" type="text" formControlName="nombre" placeholder="Titulo de disponibilidad">
+    <input class="w-full" type="text" formControlName="name" placeholder="Titulo de disponibilidad">
     <div class="">
         <p>Horas de la semana</p>
-        @for (day of weekDay; track day) {
-            <app-days [day]="day"></app-days>
-        } @empty {
-            Empty list of days
-        }
-        <button class="btn" style="margin-top: 2rem">Guardar</button>
+
+        <div formArrayName="weekDays">
+            <div *ngFor="let day of weekDays.controls; let i = index">
+              <app-days [dayForm]="castToFormGroup(day)"></app-days>
+            </div>
+        </div>
+        
+        <button class="btn" style="margin-top: 2rem" (click)="save()">Guardar</button>
     </div>
 </form>

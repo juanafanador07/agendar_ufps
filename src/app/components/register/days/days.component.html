@@ -1,11 +1,24 @@
-<div class="flex items-center gap-2">
+<div>
     <div class="flex items-center gap-2">
-        <input type="checkbox" >
-        <p>{{ day.nombre }}</p>
+        <div class="flex items-center gap-2" [formGroup]="dayForm">
+            <input type="checkbox" formControlName="state" >
+            <p>{{dayForm.value.nombre}}</p>
+        </div>
+        <div class="flex items-center gap-2" [formGroup]="tempForm">
+            <input type="text" placeholder="Hora inicio" formControlName="date_start">
+            <input type="text" placeholder="Hora fin" formControlName="date_end">
+        </div>
+        <button class="btn" (click)="addInterval()">+</button>
     </div>
-    <div class="flex items-center gap-2">
-        <input type="text" placeholder="Hora inicio">
-        <input type="text" placeholder="Hora fin">
+
+    <div class="flex flex-col items-center gap-2">
+        @for (interval of dayForm.value.intervals; track interval) {
+            <div class="flex items-center gap-2">
+                <input type="text" value="{{interval.date_start}}" disabled="true">
+                <input type="text" value="{{interval.date_end}}" disabled="true">
+            </div>
+        } @empty {
+            Empty list of Horarios
+        }
     </div>
-    <button class="btn">+</button>
 </div>

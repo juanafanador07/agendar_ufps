@@ -1,17 +1,34 @@
 import { Component, Input } from '@angular/core';
-import { WeekDay } from '../../../models/calendar';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-days',
   standalone: true,
-  imports: [],
+  imports: [ ReactiveFormsModule ],
   templateUrl: './days.component.html',
   styleUrl: './days.component.css'
 })
 export class DaysComponent {
-  @Input("day") day!:WeekDay
+  @Input() dayForm!:FormGroup
+
+  public tempForm!: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    console.log(this.day, 'sss')
+    this.tempForm = this.formBuilder.group({
+      date_start: [null, Validators.required],
+      date_end: [null, Validators.required]
+    });
+  }
+
+  addInterval(){
+    const intervals = this.dayForm.get("intervals") as FormArray;
+
+    if(this.tempForm.valid){
+      intervals.push(this.formBuilder.group({
+        ...this.tempForm.value
+      }))
+    }
   }
 }
