@@ -41,15 +41,20 @@ export class RegisterComponent implements OnInit {
 
   save(){
     if(this.form.valid){
-      console.log(this.form.value)
+      const data : any = {
+        ...this.form.value,
+        weekDays: this.form.value.weekDays.filter((day : any) => {
+          return day.state
+        }).map((day : any) => {
+          return {
+            ...day,
+            state: 1
+          }
+        })
+      }
+    
+      console.log(data)
     }
-
-    console.log({
-      ...this.form.value,
-      weekDays: this.form.value.weekDays.filter((day : any) => {
-        return day.state
-      })
-    })
   }
 
 }

@@ -30,10 +30,15 @@ body {
 .btn:hover {
     transform: scale(1.1);
 }
-
+.btn:disabled{
+    opacity: 0.5;
+}
 input {
     padding: .5rem;
     border-radius: 5px;
     border: 0;
     background-color: rgb(219, 219, 219);
+}
+input[invalid] {
+    border: 2px solid #d82f2f;
 }

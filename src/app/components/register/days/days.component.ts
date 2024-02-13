@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { hourValidator } from './validators/hourValidator';
 
 @Component({
   selector: 'app-days',
@@ -16,9 +17,16 @@ export class DaysComponent {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
+
+    const validators = [
+      Validators.required,
+      Validators.pattern(/\d\d?:\d\d?/),
+      hourValidator()
+    ]
+
     this.tempForm = this.formBuilder.group({
-      date_start: [null, Validators.required],
-      date_end: [null, Validators.required]
+      date_start: [null, validators],
+      date_end: [null, validators]
     });
   }
 
@@ -29,12 +37,12 @@ export class DaysComponent {
       intervals.push(this.formBuilder.group({
         ...this.tempForm.value
       }))
-    }
 
-    this.tempForm.setValue({
-      date_start: null,
-      date_end: null
-    })
+      this.tempForm.setValue({
+        date_start: null,
+        date_end: null
+      })
+    }
   }
 
   deleteInterval(index: number){

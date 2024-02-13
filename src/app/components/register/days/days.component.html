@@ -1,25 +1,39 @@
 <div>
-    <div class="flex items-center gap-2">
-        <div class="flex items-center gap-2" [formGroup]="dayForm">
-            <input type="checkbox" formControlName="state" >
-            <p>{{dayForm.value.nombre}}</p>
-        </div>
-        <div class="flex items-center gap-2" [formGroup]="tempForm">
-            <input type="text" placeholder="Hora inicio" formControlName="date_start">
-            <input type="text" placeholder="Hora fin" formControlName="date_end">
-        </div>
-        <button class="btn" (click)="addInterval()">+</button>
+  <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2" [formGroup]="dayForm">
+      <input type="checkbox" formControlName="state" />
+      <p>{{ dayForm.value.nombre }}</p>
     </div>
+    <div class="flex items-center gap-2" [formGroup]="tempForm">
+      <input
+        type="text"
+        placeholder="Hora inicio (00:00)"
+        formControlName="date_start"
+        [attr.invalid]="!tempForm.get('date_start')?.hasError('required') && tempForm.get('date_start')?.errors ? 'true' : null"
+      />
+      <input
+        type="text"
+        placeholder="Hora fin (00:00)"
+        formControlName="date_end"
+        [attr.invalid]="!tempForm.get('date_end')?.hasError('required') && tempForm.get('date_end')?.errors ? 'true' : null"
+      />
+    </div>
+    <button
+      class="btn"
+      (click)="addInterval()"
+      [attr.disabled]="!dayForm.value.state ? '' : null"
+    >
+      +
+    </button>
+  </div>
 
-    <div class="flex flex-col items-center gap-2">
-        @for (interval of dayForm.value.intervals; track interval) {
-            <div class="flex items-center gap-2">
-                <input type="text" value="{{interval.date_start}}" disabled="true">
-                <input type="text" value="{{interval.date_end}}" disabled="true">
-                <button class="btn" (click)="deleteInterval($index)">-</button>
-            </div>
-        } @empty {
-            Empty list of Horarios
-        }
+  <div class="flex flex-col items-center gap-2">
+    @for (interval of dayForm.value.intervals; track interval) {
+    <div class="flex items-center gap-2">
+      <input type="text" value="{{ interval.date_start }}" disabled="true" />
+      <input type="text" value="{{ interval.date_end }}" disabled="true" />
+      <button class="btn" (click)="deleteInterval($index)">-</button>
     </div>
+    } @empty { Empty list of Horarios }
+  </div>
 </div>
