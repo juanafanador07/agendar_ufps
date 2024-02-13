@@ -30,5 +30,16 @@ export class DaysComponent {
         ...this.tempForm.value
       }))
     }
+
+    this.tempForm.setValue({
+      date_start: null,
+      date_end: null
+    })
+  }
+
+  deleteInterval(index: number){
+    const intervals = this.dayForm.get("intervals") as FormArray;
+
+    intervals.removeAt(index)
   }
 }

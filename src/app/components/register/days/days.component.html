@@ -16,6 +16,7 @@
             <div class="flex items-center gap-2">
                 <input type="text" value="{{interval.date_start}}" disabled="true">
                 <input type="text" value="{{interval.date_end}}" disabled="true">
+                <button class="btn" (click)="deleteInterval($index)">-</button>
             </div>
         } @empty {
             Empty list of Horarios
